@@ -1,0 +1,18 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/c++",
+      "-std=c++11",
+      "-Werror",
+      "-Wpedantic",
+      "-Wall",
+      "-c",
+      "-o",
+      "main.o",
+      "main.cpp"
+    ],
+    "directory": "/Users/rac716/OneDrive/Masters/MSem2/NumericalSoftwareDevelopment/nsdhw_22sp/hw2/ottersome/q1",
+    "file": "/Users/rac716/OneDrive/Masters/MSem2/NumericalSoftwareDevelopment/nsdhw_22sp/hw2/ottersome/q1/main.cpp",
+    "output": "/Users/rac716/OneDrive/Masters/MSem2/NumericalSoftwareDevelopment/nsdhw_22sp/hw2/ottersome/q1/main.o"
+  }
+]

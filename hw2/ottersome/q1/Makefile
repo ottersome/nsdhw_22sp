@@ -1,4 +1,5 @@
 TARGET ?= main
+OUTPUT_REDIRECTION ?=  result.txt
 #Comment
 BUILD_DIR ?= ./
 SRC_DIR ?= ./
@@ -11,7 +12,7 @@ LDFLAGS=
 
 INC_FLAGS = $(addprefix -I,$(INC_DIRS))
 #CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -std=c++11 -DDEBUG -g #-O0 -v -da -Q
-CPPFLAGS ?= $(INC_FLAGS) -std=c++11 
+CPPFLAGS ?= $(INC_FLAGS) -std=c++11 -Werror -Wpedantic -Wall
 
 #Objects to executable
 $(BUILD_DIR)/$(TARGET): $(OBJ_FILES)
@@ -24,13 +25,17 @@ $(OBJ_DIR)/%.o:$(SRC_DIR)/%.cpp
 		
 
 .PHONY: clean, run, check, default
-default: run
+default: $(BUILD_DIR)/$(TARGET)
 
 clean:
-	rm -r $(OBJ_DIR)/%.cpp
+	rm -r $(OBJ_DIR)/*.o $(BUILD_DIR)/$(TARGET) result.txt
 
-run: $(BUILD_DIR)/$(TARGET)
-	echo "Executing the default target"
+#Im guessig this bad boid runs our already compiled executable
+run: 
+	chmod +x $(BUILD_DIR)/$(TARGET)
+	./$(BUILD_DIR)/$(TARGET)
 
+# This phony should redirect output to result.txt
 check:
-	echo "I dont know what this should do"
+	chmod +x $(BUILD_DIR)/$(TARGET)
+	./$(BUILD_DIR)/$(TARGET) > $(OUTPUT_REDIRECTION)
