@@ -36,7 +36,7 @@ $(BUILD_DIR)/$(TARGET): $(SRC_DIR)/main.cpp
 default: $(BUILD_DIR)/$(TARGET)
 
 clean:
-	rm -r $(OBJ_DIR)/*.so $(BUILD_DIR)/$(TARGET) result.txt
+	rm -rf $(OBJ_DIR)/*.so $(BUILD_DIR)/$(TARGET) result.txt || true
 
 #Pytest
 test: 

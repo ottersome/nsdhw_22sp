@@ -28,7 +28,7 @@ $(OBJ_DIR)/%.o:$(SRC_DIR)/%.cpp
 default: $(BUILD_DIR)/$(TARGET)
 
 clean:
-	rm -r $(OBJ_DIR)/*.o $(BUILD_DIR)/$(TARGET) result.txt
+	rm -rf $(OBJ_DIR)/*.o $(BUILD_DIR)/$(TARGET) result.txt || true
 
 #Im guessig this bad boid runs our already compiled executable
 run: 
