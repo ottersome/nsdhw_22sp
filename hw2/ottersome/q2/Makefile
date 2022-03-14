@@ -40,7 +40,7 @@ clean:
 
 #Im guessig this bad boid runs our already compiled executable
 test: 
-	pytest
+	python3 -m pytest
 
 # This phony should redirect output to result.txt
 check:
