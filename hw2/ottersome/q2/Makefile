@@ -4,7 +4,8 @@ OUTPUT_REDIRECTION ?=  result.txt
 #Comment
 BUILD_DIR ?= ./
 SRC_DIR ?= ./
-INC_DIRS := $(shell python3 -m pybind11 --includes) $(shell python3-config --extension-suffix)
+#INC_DIRS := $(shell python3 -m pybind11 --includes) $(shell python3-config --extension-suffix)
+INC_DIRS := ./ $(shell python3-config --extension-suffix)
 OBJ_DIR ?= ./
 
 SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp)
