@@ -7,6 +7,7 @@ SRC_DIR ?= ./
 #INC_DIRS := $(shell python3 -m pybind11 --includes) $(shell python3-config --extension-suffix)
 INC_DIRS := -I./ $(shell python3-config --includes)
 OBJ_DIR ?= ./
+#Comment to force change in git
 
 SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp)
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
