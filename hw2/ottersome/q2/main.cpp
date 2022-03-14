@@ -22,7 +22,7 @@ float get_angle_rad(Vector & v1, Vector & v2){
 }
 
 //We are adding the structure for vectors to python
-PYBIND11_MODULE(vector,m){
+PYBIND11_MODULE(_vector,m){
     m.doc() = "Vector class for hw2";
     py::class_<Vector>(m,"Vector")
         .def(py::init<float, float>())

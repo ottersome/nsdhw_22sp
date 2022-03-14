@@ -1,4 +1,4 @@
-import vector as vec
+import _vector as vec
 import numpy as np
 
 def func(x):

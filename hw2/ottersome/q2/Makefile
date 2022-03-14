@@ -1,4 +1,4 @@
-TARGETNAME = vector
+TARGETNAME = _vector
 TARGET = $(addprefix $(TARGETNAME),$(shell python3-config --extension-suffix))
 OUTPUT_REDIRECTION ?=  result.txt
 #Comment
@@ -35,7 +35,7 @@ $(BUILD_DIR)/$(TARGET): $(SRC_DIR)/main.cpp
 default: $(BUILD_DIR)/$(TARGET)
 
 clean:
-	rm -r $(OBJ_DIR)/*.o $(BUILD_DIR)/$(TARGET) result.txt
+	rm -r $(OBJ_DIR)/*.so $(BUILD_DIR)/$(TARGET) result.txt
 
 #Im guessig this bad boid runs our already compiled executable
 test: 
