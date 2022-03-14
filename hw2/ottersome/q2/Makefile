@@ -28,7 +28,6 @@ CPPFLAGS ?= -O3 -Wall -shared -std=c++11 -fPIC $(INC_DIRS)
 	#$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 		
 $(BUILD_DIR)/$(TARGET): $(SRC_DIR)/main.cpp
-	echo "There are the inc dirs : ${INC_DIRS}"
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< -o $@ $(LDFLAGS)
 
 .PHONY: clean, run, check, default
