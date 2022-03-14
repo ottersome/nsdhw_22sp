@@ -38,7 +38,7 @@ default: $(BUILD_DIR)/$(TARGET)
 clean:
 	rm -r $(OBJ_DIR)/*.so $(BUILD_DIR)/$(TARGET) result.txt
 
-#Im guessig this bad boid runs our already compiled executable
+#Pytest
 test: 
 	python3 -m pytest
 
