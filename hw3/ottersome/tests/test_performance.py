@@ -8,7 +8,6 @@ import time
 import timeit
 import random
 
-
 random.seed(time.time_ns())
 
 def print_matrix(m):
@@ -25,32 +24,57 @@ def test_indexing():
     assert m1[0,1] == 0
     assert m1[1,0] == 0
 
+def test_nomatch_tile_to_naive():
+
+    size = 100
+    mat1, mat2, *_ = make_matrices(size)
+
+    ret_naive = mtx.multiply_naive(mat1, mat2)
+    ret_mkl = mtx.multiply_tile(mat1, mat2,16)
+
+    assert size == ret_naive.nrow
+    assert size == ret_naive.ncol
+    assert size == ret_mkl.nrow
+    assert size == ret_mkl.ncol
+
+    # Change one element and see if reports difference
+    ret_naive[0,4] = 42.2
+
+    matrices_differ =True
+
+    for i in range(ret_naive.nrow):
+        for j in range(ret_naive.ncol):
+            if ret_naive[i,j] != ret_mkl[i,j]:
+                same_matrices=False
+                break
+        if same_matrices == False:
+            break
+
+    assert not same_matrices
+    assert not (ret_naive == ret_mkl)
+
 def test_match_tile_to_naive():
 
     size = 100
     mat1, mat2, *_ = make_matrices(size)
 
-    print("Oh initial mail man: m1_cols:{}, m2_rows:{}".format(mat1.ncol,mat2.nrow))
     ret_naive = mtx.multiply_naive(mat1, mat2)
-    print("Oh last mail man: m1_cols:{}, m2_rows:{}".format(mat1.ncol,mat2.nrow))
     ret_mkl = mtx.multiply_tile(mat1, mat2,16)
 
-    self.assertEqual(size, ret_naive.nrow)
-    self.assertEqual(size, ret_naive.ncol)
-    self.assertEqual(size, ret_mkl.nrow)
-    self.assertEqual(size, ret_mkl.ncol)
+    assert size == ret_naive.nrow
+    assert size == ret_naive.ncol
+    assert size == ret_mkl.nrow
+    assert size == ret_mkl.ncol
 
     for i in range(ret_naive.nrow):
         for j in range(ret_naive.ncol):
-            self.assertNotEqual(mat1[i,j], ret_mkl[i,j])
-            self.assertEqual(ret_naive[i,j], ret_mkl[i,j])
-
+            assert ret_naive[i,j] == ret_mkl[i,j]
+            #  assert mat1[i,j] != ret_mkl[i,j]
+    assert ret_naive == ret_mkl
 
 def test_t_mult_by_ident():
-    print("Pun pun Optimized ")
     m1 = mtx.ident(16,16)
     m2 = mtx.Matrix(16,2)
-    print("Oh mail man: m1_cols:{}, m2_rows:{}".format(m1.ncol,m2.nrow))
     
     # m1[0,3] = 1
     m2[0,1]=1
@@ -86,14 +110,16 @@ def test_t_mult_by_ident():
     m2[13,0]=14
     m2[14,0]=15
     m2[15,0]=16
-    print("Oh mail right before tile man: m1_cols:{}, m2_rows:{}".format(m1.ncol,m2.nrow))
-    # Remember to use multiple of siz eof double for parameter
-    # Usually sizeof(double)=8
+    
     m3 = mtx.multiply_tile(m1,m2,16)
-    print_matrix(m3)
+    for i in range(2):
+        for j in range (16):
+            assert m3[i,j] == m2[i,j]
+
+    assert  m3 == m2
+
 
 def test_mult_by_ident():
-    print("Pun pun")
     m1 = mtx.ident(3,3)
     m2 = mtx.Matrix(3,1)
     m2[0,0]=1
@@ -101,9 +127,10 @@ def test_mult_by_ident():
     m2[0,2]=3
     m3 = mtx.multiply_naive(m1,m2)
     print_matrix(m3)
+    assert m2 == m3
 
 def test_tile_n_native_random():
-    m1,m2,_ = make_random_matrices(15)
+    m1,m2,_ = make_random_matrices(random.randint(3,31))
 
     m3_naive = mtx.multiply_naive(m1,m2)
     m3_tiled = mtx.multiply_tile(m1,m2,32)
@@ -121,7 +148,7 @@ def test_tile_n_native_random():
 
 
 def test_mkl_n_native_random():
-    m1,m2,_ = make_random_matrices(15)
+    m1,m2,_ = make_random_matrices(random.randint(3,31))
 
     m3_naive = mtx.multiply_naive(m1,m2)
     m3_mkl= mtx.multiply_mkl(m1,m2)
@@ -228,7 +255,7 @@ for it in range(size):
             w.write(f'{minsec} seconds\n')
 
             w.write('MKL speed-up over naive: %g x\n' % (naivesec/mklsec))
-            w.write('Tile speed-up over naive: %g x\n' % (naivesec/tile))
+            w.write('Tile speed-up over naive: %g x\n' % (naivesec/tile_sec))
             w.write('MKL speed-up over Tile: %g x\n' % (tile_sec/mklsec))
 
 
