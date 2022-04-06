@@ -35,6 +35,7 @@ default: test
 
 test: foundation $(BUILD_DIR)/$(TARGET)
 	python3 $(TESTS_DIR)/unit_test.py
+	python3 -m pytest $(TESTS_DIR)/test_performance.py
 
 $(BUILD_DIR)/$(TARGET): $(OBJ_FILES)
 	@echo 'Building Targe for ${OBJ_FILES}'
@@ -55,12 +56,6 @@ $(BUILD_DIR) $(SRC_DIR) $(OBJ_DIR): #$(DEPS_DIR):
 
 -include $(DEPENDS)
 
-
-show_values:
-	echo $(UNAME_S)
-	echo 'Working under os: ${UNAME_S}'
-	@echo "Value for INC_DIRS=${INC_DIRS}"
-
 clean:
-	rm -rf $(BUILD_DIR) $(OBJ_DIR) ./*.so ./__pycache__  || true
+	rm -rf $(BUILD_DIR) $(OBJ_DIR) ./*.so ./__pycache__ performance.txt || true
 

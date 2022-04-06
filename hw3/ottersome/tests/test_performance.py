@@ -7,6 +7,7 @@ import _matrix as mtx
 import time
 import random
 
+
 random.seed(time.time_ns())
 
 def print_matrix(m):
@@ -18,12 +19,12 @@ def print_matrix(m):
 
 def test_indexing():
     m1 = mtx.ident(3,3)
-    print("m[0,0]={}".format(m1[0,0]))
-    print("m[1,1,]={}".format(m1[1,1]))
-    print("m[1,0]={}".format(m1[1,0]))
-    print("m[2,2]={}".format(m1[2,2]))
+    assert m1[0,0] == 1
+    assert m1[1,1] == 1
+    assert m1[0,1] == 0
+    assert m1[1,0] == 0
 
-def tost_match_tile_to_naive():
+def test_match_tile_to_naive():
 
     size = 100
     mat1, mat2, *_ = make_matrices(size)
@@ -184,3 +185,51 @@ def make_matrices(size):
             mat3[it, jt] = 0
 
     return mat1, mat2, mat3
+
+def test_benchmark():
+
+    # Since this is already provided by the `validate.py` script I'll just put it here
+    setup = '''
+import _matrix as mtx
+import random
+import time
+
+size = 1000
+random.seed(time.time_ns())
+
+mat1 = mtx.Matrix(size,size)
+mat2 = mtx.Matrix(size,size)
+
+for it in range(size):
+    for jt in range(size):
+        mat1[it, jt] = random.gauss(0, 1)
+        mat2[it, jt] = random.gauss(0, 1)
+'''
+
+    naive = timeit.Timer('mtx.multiply_naive(mat1, mat2)', setup=setup)
+    mkl = timeit.Timer('mtx.multiply_mkl(mat1, mat2)', setup=setup)
+    tile = timeit.Timer('mtx.multiply_tile(mat1, mat2,16)', setup=setup)
+
+    repeat = 5
+
+    with open('performance.txt', 'w') as fobj:
+        for w in [sys.stdout,fobj]:
+            w.write(f'Start multiply_naive (repeat={repeat}), take min = ')
+            naivesec = minsec = min(naive.repeat(repeat=repeat, number=1))
+            w.write(f'{minsec} seconds\n')
+
+            w.write(f'Start multiply_mkl (repeat={repeat}), take min = ')
+            mklsec = minsec = min(mkl.repeat(repeat=repeat, number=1))
+            w.write(f'{minsec} seconds\n')
+
+            w.write(f'Start multiply_tile (repeat={repeat}), take min = ')
+            tile_sec = minsec = min(tile.repeat(repeat=repeat, number=1))
+            w.write(f'{minsec} seconds\n')
+
+            w.write('MKL speed-up over naive: %g x\n' % (naivesec/mklsec))
+            w.write('Tile speed-up over naive: %g x\n' % (naivesec/tile))
+            w.write('MKL speed-up over Tile: %g x\n' % (tile_sec/mklsec))
+
+
+    pass 
+
