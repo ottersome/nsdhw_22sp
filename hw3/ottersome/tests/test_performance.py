@@ -5,6 +5,7 @@ import unittest
 sys.path.append('./modules')
 import _matrix as mtx
 import time
+import timeit
 import random
 
 

@@ -34,7 +34,7 @@ CPPFLAGS ?= -pedantic -O3 -Wall -Wextra -std=c++11 -MMD -MP -fPIC $(INC_DIRS)
 default: test
 
 test: foundation $(BUILD_DIR)/$(TARGET)
-	python3 $(TESTS_DIR)/unit_test.py
+	python3 $(TESTS_DIR)/unit_testing.py
 	python3 -m pytest $(TESTS_DIR)/test_performance.py
 
 $(BUILD_DIR)/$(TARGET): $(OBJ_FILES)
